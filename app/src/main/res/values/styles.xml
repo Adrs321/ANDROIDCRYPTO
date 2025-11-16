@@ -1,0 +1,19 @@
+<resources>
+    <style name="DetailLabel" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#B0B0B0</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:layout_columnWeight">1</item>
+    </style>
+
+    <style name="DetailValue" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:layout_gravity">end</item>
+        <item name="android:layout_columnWeight">1</item>
+    </style>
+</resources>

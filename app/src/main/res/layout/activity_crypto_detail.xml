@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#1C1C23"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/tv_detail_rank_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Rango"
+        android:textColor="#B0B0B0"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_detail_rank"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_detail_rank_label"
+        tools:text="#1" />
+
+    <TextView
+        android:id="@+id/tv_detail_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="4dp"
+        android:ellipsize="end"
+        android:fontFamily="sans-serif-medium"
+        android:maxLines="1"
+        android:textColor="@android:color/white"
+        android:textSize="34sp"
+        app:layout_constraintStart_toEndOf="@id/tv_detail_rank"
+        app:layout_constraintTop_toTopOf="@id/tv_detail_rank_label"
+        tools:text="Bitcoin" />
+
+    <TextView
+        android:id="@+id/tv_detail_symbol"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#B0B0B0"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@id/tv_detail_name"
+        app:layout_constraintTop_toBottomOf="@id/tv_detail_name"
+        tools:text="(BTC)" />
+    <TextView
+        android:id="@+id/tv_detail_price_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Precio Actual"
+        android:textColor="#B0B0B0"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_detail_symbol" />
+    <TextView
+        android:id="@+id/tv_detail_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_detail_price_label"
+        app:layout_constraintBottom_toBottomOf="@id/tv_detail_price_label"
+        tools:text="$65,000.00" />
+    <TextView
+        android:id="@+id/tv_detail_change_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Cambio (24h)"
+        android:textColor="#B0B0B0"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_detail_price_label" />
+
+    <TextView
+        android:id="@+id/tv_detail_change"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_detail_change_label"
+        app:layout_constraintBottom_toBottomOf="@id/tv_detail_change_label"
+        tools:text="+1.25%" />
+
+    <TextView
+        android:id="@+id/tv_detail_market_cap_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Capitalización de Mercado"
+        android:textColor="#B0B0B0"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_detail_change_label" />
+
+    <TextView
+        android:id="@+id/tv_detail_market_cap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_detail_market_cap_label"
+        app:layout_constraintBottom_toBottomOf="@id/tv_detail_market_cap_label"
+        tools:text="$1.2T" />
+
+    <TextView
+        android:id="@+id/tv_detail_volume_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Volumen (24h)"
+        android:textColor="#B0B0B0"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_detail_market_cap_label" />
+
+    <TextView
+        android:id="@+id/tv_detail_volume"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_detail_volume_label"
+        app:layout_constraintBottom_toBottomOf="@id/tv_detail_volume_label"
+        tools:text="$50B" />
+
+    <TextView
+        android:id="@+id/tv_detail_supply_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Suministro Máximo"
+        android:textColor="#B0B0B0"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_detail_volume_label" />
+
+    <TextView
+        android:id="@+id/tv_detail_supply"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_detail_supply_label"
+        app:layout_constraintBottom_toBottomOf="@id/tv_detail_supply_label"
+        tools:text="21,000,000" />
+
+
+    <Button
+        android:id="@+id/btn_analyze_ia"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:backgroundTint="#008BFF"
+        android:paddingVertical="12dp"
+        android:text="Analizar con IA"
+        android:textColor="@android:color/white"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_detail_supply_label" />
+</androidx.constraintlayout.widget.ConstraintLayout>
