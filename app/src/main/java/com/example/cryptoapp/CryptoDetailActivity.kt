@@ -2,12 +2,14 @@ package com.example.cryptoapp
 
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.cryptoapp.api.CryptoCoin
+import com.example.cryptoapp.db.CryptoDbHelper
 import com.google.ai.client.generativeai.GenerativeModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -18,11 +20,14 @@ import java.util.Locale
 class CryptoDetailActivity : AppCompatActivity() {
 
     private lateinit var cryptoCoin: CryptoCoin
+    private lateinit var dbHelper: CryptoDbHelper
+    private var userId: Int = -1
+    private var isFavorite = false
 
     private val generativeModel: GenerativeModel by lazy {
         GenerativeModel(
             modelName = "gemini-2.5-flash-lite",
-            apiKey = ""
+            apiKey = "AIzaSyBK8_VAAqWb2a1h2ZOHS8syRdlO9ro4-xk"
         )
     }
 
@@ -30,7 +35,12 @@ class CryptoDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_crypto_detail)
 
+        dbHelper = CryptoDbHelper(this)
         cryptoCoin = intent.getParcelableExtra<CryptoCoin>("CRYPTO_COIN")!!
+
+        // Obtener el ID del usuario de la sesión
+        val session = getSharedPreferences("session", MODE_PRIVATE)
+        userId = session.getInt("userId", -1)
 
         // Bind views
         val tvName: TextView = findViewById(R.id.tv_detail_name)
@@ -42,8 +52,9 @@ class CryptoDetailActivity : AppCompatActivity() {
         val tvVolume: TextView = findViewById(R.id.tv_detail_volume)
         val tvSupply: TextView = findViewById(R.id.tv_detail_supply)
         val btnAnalyze: Button = findViewById(R.id.btn_analyze_ia)
+        val btnFavorite: ImageButton = findViewById(R.id.btn_favorite)
 
-
+        // Set data
         tvName.text = cryptoCoin.name
         tvSymbol.text = "(${cryptoCoin.symbol.uppercase()})"
         tvRank.text = "#${cryptoCoin.marketCapRank?.toString() ?: "N/A"}"
@@ -53,12 +64,42 @@ class CryptoDetailActivity : AppCompatActivity() {
         tvVolume.text = formatLargeNumber(cryptoCoin.totalVolume)
         tvSupply.text = formatLargeNumber(cryptoCoin.maxSupply)
 
+        // Lógica de Favoritos
+        if (userId != -1) {
+            isFavorite = dbHelper.isFavorite(userId, cryptoCoin.id)
+            updateFavoriteButton(btnFavorite)
+
+            btnFavorite.setOnClickListener {
+                if (isFavorite) {
+                    dbHelper.removeFavorite(userId, cryptoCoin.id)
+                    Toast.makeText(this, "Eliminado de favoritos", Toast.LENGTH_SHORT).show()
+                } else {
+                    dbHelper.addFavorite(userId, cryptoCoin.id)
+                    Toast.makeText(this, "Añadido a favoritos", Toast.LENGTH_SHORT).show()
+                }
+                isFavorite = !isFavorite
+                updateFavoriteButton(btnFavorite)
+            }
+        }
+
         btnAnalyze.setOnClickListener {
             Toast.makeText(this, "Analizando ${cryptoCoin.name}...", Toast.LENGTH_SHORT).show()
             lifecycleScope.launch {
                 val analisis = generarAnalisisConIA(cryptoCoin)
                 mostrarDialogoDeAnalisis(cryptoCoin.name, analisis)
             }
+        }
+    }
+
+    private fun updateFavoriteButton(btnFavorite: ImageButton) {
+        if (isFavorite) {
+            btnFavorite.setImageResource(android.R.drawable.star_on)
+            // Amarillo ámbar para la estrella marcada
+            btnFavorite.setColorFilter(android.graphics.Color.parseColor("#FFC107"), android.graphics.PorterDuff.Mode.SRC_IN)
+        } else {
+            btnFavorite.setImageResource(android.R.drawable.star_off)
+            // Gris claro para la estrella sin marcar
+            btnFavorite.setColorFilter(android.graphics.Color.parseColor("#B0B0B0"), android.graphics.PorterDuff.Mode.SRC_IN)
         }
     }
 
@@ -102,7 +143,7 @@ class CryptoDetailActivity : AppCompatActivity() {
             Basado *solo* en esta información, dame un breve análisis técnico
             (de 2 a 3 líneas) y una recomendación final en mayúsculas: 
             (COMPRAR, VENDER, o MANTENER).
-            EN LA RESPUESTA NO DIGAS QUE FALTA INFORMACION
+            EN LA RESPUESTA NUNCA DIGAS O MENCIONES DE QUE TE FALTA INFORMACION PARA PODER HACER EL ANALISIS.
         """.trimIndent()
 
         return try {

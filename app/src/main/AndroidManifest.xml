@@ -14,9 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CryptoAPP">
 
-        <!-- 1. "Inicio" es ahora la actividad de lanzamiento -->
         <activity
-            android:name=".Inicio"
+            android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,11 +23,27 @@
             </intent-filter>
         </activity>
 
-        <!-- 2. "MainActivity" es ahora una actividad normal -->
+        <activity
+            android:name=".RegisterActivity"
+            android:exported="false" />
+
         <activity
             android:name=".MainActivity"
             android:exported="false" />
+            
+        <activity
+            android:name=".CryptoDetailActivity"
+            android:exported="false" />
 
+        <activity
+            android:name=".FavoriteCoinsActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".Inicio"
+            android:exported="false" />
+
+        <!-- Manteniendo otras actividades que ya tenías -->
         <activity
             android:name=".AnalisisActivity"
             android:exported="false" />
@@ -40,10 +55,6 @@
             android:exported="false"
             android:label="@string/title_activity_leer_web"
             android:theme="@style/Theme.CryptoAPP" />
-
-        <activity
-            android:name=".CryptoDetailActivity"
-            android:exported="false" />
 
     </application>
 

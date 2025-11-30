@@ -1,4 +1,4 @@
-// Archivo: MainActivity.kt
+
 package com.example.cryptoapp
 
 import android.content.Intent
@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var barraCarga: ProgressBar
     private lateinit var cryptoSearchView: SearchView
 
-    // --- Almacén de Datos ---
+
     private var listaCompletaDeMonedas: List<CryptoCoin> = emptyList()
     private var listaMostradaDeMonedas: List<CryptoCoin> = emptyList()
     private var adaptadorLista: ArrayAdapter<String>? = null // Referencia al adaptador

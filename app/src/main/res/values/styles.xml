@@ -16,4 +16,9 @@
         <item name="android:layout_gravity">end</item>
         <item name="android:layout_columnWeight">1</item>
     </style>
+
+    <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
+        <item name="android:textColor">#E0E0E0</item>
+        <item name="android:textColorHint">#A0A0A0</item>
+    </style>
 </resources>

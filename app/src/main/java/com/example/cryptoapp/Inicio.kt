@@ -3,6 +3,7 @@ package com.example.cryptoapp
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
 class Inicio : AppCompatActivity() {
@@ -10,16 +11,37 @@ class Inicio : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_inicio)
 
+        val btnCoinList = findViewById<Button>(R.id.btn_coin_list)
+        val btnFavoriteCoins = findViewById<Button>(R.id.btn_favorite_coins)
+        val btnSettings = findViewById<Button>(R.id.btn_settings)
+        val btnLogout = findViewById<Button>(R.id.btn_logout)
 
-        val botonSiguiente = findViewById<Button>(R.id.Siguiente)
+        // Navegar a la lista de monedas
+        btnCoinList.setOnClickListener {
+            startActivity(Intent(this, MainActivity::class.java))
+        }
 
+        // Navegar a la lista de monedas favoritas
+        btnFavoriteCoins.setOnClickListener {
+            startActivity(Intent(this, FavoriteCoinsActivity::class.java))
+        }
 
-        botonSiguiente.setOnClickListener {
+        // Placeholder para Configuraciones
+        btnSettings.setOnClickListener {
+            Toast.makeText(this, "Próximamente...", Toast.LENGTH_SHORT).show()
+        }
 
-            val intent = Intent(this, MainActivity::class.java)
-            
+        // Cerrar sesión
+        btnLogout.setOnClickListener {
+            // Borrar los datos de la sesión
+            val session = getSharedPreferences("session", MODE_PRIVATE)
+            session.edit().clear().apply()
 
+            // Redirigir a LoginActivity
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
+            finish()
         }
     }
 }
