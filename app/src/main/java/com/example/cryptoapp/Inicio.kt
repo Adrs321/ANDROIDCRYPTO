@@ -13,6 +13,7 @@ class Inicio : AppCompatActivity() {
 
         val btnCoinList = findViewById<Button>(R.id.btn_coin_list)
         val btnFavoriteCoins = findViewById<Button>(R.id.btn_favorite_coins)
+        val btnNews = findViewById<Button>(R.id.btn_news)
         val btnSettings = findViewById<Button>(R.id.btn_settings)
         val btnLogout = findViewById<Button>(R.id.btn_logout)
 
@@ -24,6 +25,11 @@ class Inicio : AppCompatActivity() {
         // Navegar a la lista de monedas favoritas
         btnFavoriteCoins.setOnClickListener {
             startActivity(Intent(this, FavoriteCoinsActivity::class.java))
+        }
+
+        // Navegar a las noticias
+        btnNews.setOnClickListener {
+            startActivity(Intent(this, NewsActivity::class.java))
         }
 
         // Placeholder para Configuraciones

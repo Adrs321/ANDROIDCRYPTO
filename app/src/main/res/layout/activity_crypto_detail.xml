@@ -29,32 +29,35 @@
         tools:text="#1" />
 
     <!-- Name and Symbol -->
+
+    <!-- Botón de Favorito (NUEVO) -->
     <TextView
         android:id="@+id/tv_detail_name"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="266dp"
+        android:layout_height="43dp"
         android:layout_marginStart="16dp"
         android:ellipsize="end"
+        android:fontFamily="sans-serif-medium"
         android:maxLines="1"
         android:textColor="@android:color/white"
         android:textSize="34sp"
-        android:fontFamily="sans-serif-medium"
-        app:layout_constraintStart_toEndOf="@id/tv_detail_rank"
-        app:layout_constraintEnd_toStartOf="@+id/btn_favorite"
         app:layout_constraintBottom_toTopOf="@+id/tv_detail_symbol"
+        app:layout_constraintEnd_toStartOf="@+id/btn_favorite"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@id/tv_detail_rank"
         tools:text="Bitcoin" />
 
     <TextView
         android:id="@+id/tv_detail_symbol"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
         android:textColor="#B0B0B0"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="@id/tv_detail_name"
         app:layout_constraintTop_toBottomOf="@id/tv_detail_name"
         tools:text="(BTC)" />
 
-    <!-- Botón de Favorito (NUEVO) -->
     <ImageButton
         android:id="@+id/btn_favorite"
         android:layout_width="48dp"
@@ -101,13 +104,16 @@
 
     <Button
         android:id="@+id/btn_analyze_ia"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="242dp"
+        android:layout_height="57dp"
+        android:layout_marginBottom="272dp"
         android:backgroundTint="#008BFF"
         android:text="Analizar con IA"
         android:textColor="@android:color/white"
+        android:textSize="25dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
