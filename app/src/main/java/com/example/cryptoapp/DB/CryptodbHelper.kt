@@ -11,7 +11,7 @@ class CryptoDbHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
 
     companion object {
         private const val DB_NAME = "cryptoapp.db"
-        private const val DB_VERSION = 4 // Versión incrementada para añadir favoritos
+        private const val DB_VERSION = 5 // Versión incrementada para añadir favoritos
 
         // Tablas
         const val TABLE_CRYPTO = "crypto_local"
@@ -89,6 +89,19 @@ class CryptoDbHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
             );
             """.trimIndent()
         )
+
+        // --- CÓDIGO NUEVO: Insertar Usuario Admin ---
+        // Usamos tu función hashPassword para guardar la clave encriptada
+        val adminPass = hashPassword("admin") 
+        
+        val cv = ContentValues().apply {
+            put(COL_USER_NAME, "Administrador")
+            put(COL_USER_EMAIL, "admin@admin.com") // Usuario por defecto
+            put(COL_USER_PASSWORD, adminPass)      // Contraseña: "admin"
+        }
+        
+        db.insert(TABLE_USERS, null, cv)
+        // ---------------------------------------------
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {

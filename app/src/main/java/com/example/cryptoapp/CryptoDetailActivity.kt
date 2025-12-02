@@ -26,8 +26,8 @@ class CryptoDetailActivity : AppCompatActivity() {
 
     private val generativeModel: GenerativeModel by lazy {
         GenerativeModel(
-            modelName = "gemini-2.5-flash-lite",
-            apiKey = "AIzaSyBK8_VAAqWb2a1h2ZOHS8syRdlO9ro4-xk"
+            modelName = "gemini-2.0-flash-lite",
+            apiKey = ""
         )
     }
 
