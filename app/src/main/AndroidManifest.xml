@@ -30,7 +30,7 @@
         <activity
             android:name=".MainActivity"
             android:exported="false" />
-            
+
         <activity
             android:name=".CryptoDetailActivity"
             android:exported="false" />
@@ -44,10 +44,12 @@
             android:exported="false" />
 
         <activity
+            android:name=".FavoriteNewsActivity"
+            android:exported="false" />
+        <activity
             android:name=".Inicio"
             android:exported="false" />
 
-        <!-- Manteniendo otras actividades que ya tenías -->
         <activity
             android:name=".AnalisisActivity"
             android:exported="false" />

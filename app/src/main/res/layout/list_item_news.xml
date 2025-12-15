@@ -32,6 +32,17 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Bitcoin sube un 20% en un solo día tras un anuncio inesperado" />
 
+    <ImageButton
+        android:id="@+id/btn_fav_news"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@android:drawable/star_off"
+        app:tint="#B0B0B0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_news_item_title" />
+
     <TextView
         android:id="@+id/tv_news_item_source"
         android:layout_width="0dp"
@@ -40,7 +51,7 @@
         android:textColor="#B0B0B0"
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="@id/tv_news_item_title"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btn_fav_news"
         app:layout_constraintTop_toBottomOf="@id/tv_news_item_title"
         tools:text="CoinDesk" />
 

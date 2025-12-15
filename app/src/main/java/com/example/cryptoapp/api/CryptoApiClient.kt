@@ -7,10 +7,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-/**
- * Objeto Singleton para configurar y crear el cliente de Retrofit.
- * Es idéntico a tu ApiDuocClient, pero apunta a la URL de CoinGecko.
- */
+
 object CryptoApiClient {
 
 

@@ -1,7 +1,9 @@
 package com.example.cryptoapp
 
 import android.os.Bundle
+import android.text.InputType
 import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
@@ -24,10 +26,12 @@ class CryptoDetailActivity : AppCompatActivity() {
     private var userId: Int = -1
     private var isFavorite = false
 
+    // Configuración del modelo Gemini
     private val generativeModel: GenerativeModel by lazy {
         GenerativeModel(
+            // Usamos 1.5-flash que es rápido y estable para cuentas gratuitas
             modelName = "gemini-2.0-flash-lite",
-            apiKey = ""
+            apiKey = "" // Tu API Key
         )
     }
 
@@ -36,13 +40,15 @@ class CryptoDetailActivity : AppCompatActivity() {
         setContentView(R.layout.activity_crypto_detail)
 
         dbHelper = CryptoDbHelper(this)
+
+        // Recuperamos la moneda del Intent
         cryptoCoin = intent.getParcelableExtra<CryptoCoin>("CRYPTO_COIN")!!
 
         // Obtener el ID del usuario de la sesión
         val session = getSharedPreferences("session", MODE_PRIVATE)
         userId = session.getInt("userId", -1)
 
-        // Bind views
+        // Bind views (Enlazar vistas)
         val tvName: TextView = findViewById(R.id.tv_detail_name)
         val tvSymbol: TextView = findViewById(R.id.tv_detail_symbol)
         val tvPrice: TextView = findViewById(R.id.tv_detail_price)
@@ -54,7 +60,10 @@ class CryptoDetailActivity : AppCompatActivity() {
         val btnAnalyze: Button = findViewById(R.id.btn_analyze_ia)
         val btnFavorite: ImageButton = findViewById(R.id.btn_favorite)
 
-        // Set data
+
+        val btnAlert: ImageButton = findViewById(R.id.btn_alert)
+
+        // Set data (Poblar datos)
         tvName.text = cryptoCoin.name
         tvSymbol.text = "(${cryptoCoin.symbol.uppercase()})"
         tvRank.text = "#${cryptoCoin.marketCapRank?.toString() ?: "N/A"}"
@@ -66,9 +75,11 @@ class CryptoDetailActivity : AppCompatActivity() {
 
         // Lógica de Favoritos
         if (userId != -1) {
+            // Verificar si es favorita al iniciar
             isFavorite = dbHelper.isFavorite(userId, cryptoCoin.id)
             updateFavoriteButton(btnFavorite)
 
+            // Click en Favorito
             btnFavorite.setOnClickListener {
                 if (isFavorite) {
                     dbHelper.removeFavorite(userId, cryptoCoin.id)
@@ -80,8 +91,22 @@ class CryptoDetailActivity : AppCompatActivity() {
                 isFavorite = !isFavorite
                 updateFavoriteButton(btnFavorite)
             }
+
+            // --- NUEVO: Click en Alerta ---
+            btnAlert.setOnClickListener {
+                mostrarDialogoCrearAlerta()
+            }
+        } else {
+            // Si no hay sesión iniciada, avisar al usuario
+            btnFavorite.setOnClickListener {
+                Toast.makeText(this, "Inicia sesión para guardar favoritos", Toast.LENGTH_SHORT).show()
+            }
+            btnAlert.setOnClickListener {
+                Toast.makeText(this, "Inicia sesión para crear alertas", Toast.LENGTH_SHORT).show()
+            }
         }
 
+        // Lógica de Análisis con IA
         btnAnalyze.setOnClickListener {
             Toast.makeText(this, "Analizando ${cryptoCoin.name}...", Toast.LENGTH_SHORT).show()
             lifecycleScope.launch {
@@ -91,14 +116,14 @@ class CryptoDetailActivity : AppCompatActivity() {
         }
     }
 
+    // --- Funciones Auxiliares ---
+
     private fun updateFavoriteButton(btnFavorite: ImageButton) {
         if (isFavorite) {
             btnFavorite.setImageResource(android.R.drawable.star_on)
-            // Amarillo ámbar para la estrella marcada
             btnFavorite.setColorFilter(android.graphics.Color.parseColor("#FFC107"), android.graphics.PorterDuff.Mode.SRC_IN)
         } else {
             btnFavorite.setImageResource(android.R.drawable.star_off)
-            // Gris claro para la estrella sin marcar
             btnFavorite.setColorFilter(android.graphics.Color.parseColor("#B0B0B0"), android.graphics.PorterDuff.Mode.SRC_IN)
         }
     }
@@ -129,21 +154,29 @@ class CryptoDetailActivity : AppCompatActivity() {
         }
     }
 
+
     private suspend fun generarAnalisisConIA(moneda: CryptoCoin): String {
         val precio = formatCurrency(moneda.priceUsd)
         val cambio = formatPercentage(moneda.changePercent24Hr)
         val nombre = moneda.name
 
+        // Prompt actualizado para pedir Sentimiento
         val prompt = """
-            Eres un asistente de trading de criptomonedas.
-            Un usuario está viendo la moneda: $nombre (${moneda.symbol}).
-            Su precio actual es $precio.
-            Su cambio en las últimas 24 horas es de $cambio.
-
-            Basado *solo* en esta información, dame un breve análisis técnico
-            (de 2 a 3 líneas) y una recomendación final en mayúsculas: 
-            (COMPRAR, VENDER, o MANTENER).
-            EN LA RESPUESTA NUNCA DIGAS O MENCIONES DE QUE TE FALTA INFORMACION PARA PODER HACER EL ANALISIS.
+            Eres un experto analista de criptomonedas.
+            Analiza: $nombre (${moneda.symbol}).
+            Precio Actual: $precio.
+            Cambio 24h: $cambio.
+            
+            Tu tarea:
+            1. Indica el "Sentimiento de Mercado" actual. Usa ESTRICTAMENTE una de estas etiquetas al inicio:
+               "SENTIMIENTO: ALCISTA (Bullish)"
+               "SENTIMIENTO: BAJISTA (Bearish)"
+               "SENTIMIENTO: NEUTRAL"
+            
+            2. Escribe un análisis técnico muy breve (máximo 3 líneas) explicando por qué.
+            3. Termina con la recomendación en mayúsculas: (COMPRAR / VENDER / MANTENER).
+            
+            No menciones que te falta información. Usa los datos provistos.
         """.trimIndent()
 
         return try {
@@ -164,5 +197,52 @@ class CryptoDetailActivity : AppCompatActivity() {
             dialog.dismiss()
         }
         builder.create().show()
+    }
+
+
+    private fun mostrarDialogoCrearAlerta() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("🔔 Crear Alerta de Precio")
+        builder.setMessage("Avísame cuando ${cryptoCoin.name} llegue a:")
+
+        // Input para el precio
+        val input = EditText(this)
+        input.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
+        input.hint = "Ej: 65000.50"
+
+        // Pre-llenar con el precio actual (sin el símbolo $)
+        // Usamos let para asegurarnos de que no sea nulo
+        val precioActual = cryptoCoin.priceUsd ?: 0.0
+        if (precioActual > 0) {
+            input.setText(precioActual.toString())
+        }
+
+        builder.setView(input)
+
+        builder.setPositiveButton("Guardar") { dialog, _ ->
+            val textoPrecio = input.text.toString()
+
+            if (textoPrecio.isNotEmpty()) {
+                val precioObjetivo = textoPrecio.toDoubleOrNull()
+                // Obtenemos el precio actual (seguro porque si estamos aquí, la moneda cargó)
+                val precioActual = cryptoCoin.priceUsd ?: 0.0
+
+                if (precioObjetivo != null && precioActual > 0) {
+                    // CAMBIO: Pasamos precioObjetivo Y precioActual
+                    dbHelper.addAlert(userId, cryptoCoin.symbol, precioObjetivo, precioActual)
+
+                    val tipoAlerta = if (precioObjetivo > precioActual) "suba" else "baje"
+                    Toast.makeText(this, "Avisar cuando $tipoAlerta a $${precioObjetivo}", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "Precio inválido", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
+        builder.setNegativeButton("Cancelar") { dialog, _ ->
+            dialog.cancel()
+        }
+
+        builder.show()
     }
 }

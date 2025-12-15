@@ -77,4 +77,5 @@ dependencies {
     implementation("com.google.ai.client.generativeai:generativeai:0.7.0")
     // Para cargar imágenes desde una URL (NUEVO)
     implementation("io.coil-kt:coil:2.6.0")
+    implementation("com.google.android.gms:play-services-auth:21.0.0")
 }

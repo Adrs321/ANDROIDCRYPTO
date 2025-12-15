@@ -5,14 +5,10 @@ import com.example.cryptoapp.api.CryptoCoin
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-/**
- * Este objeto maneja las operaciones de la DB (leer, escribir)
- * fuera del hilo principal, usando Coroutines.
- * Idéntico a tu AlumnosLocalRepository.
- */
+
 object CryptoLocalRepository {
 
-    /** Inserta una LISTA de monedas (borrando las anteriores) */
+
     suspend fun insertMany(context: Context, coins: List<CryptoCoin>): Result<Unit> =
         withContext(Dispatchers.IO) {
             runCatching {
@@ -40,6 +36,14 @@ object CryptoLocalRepository {
         withContext(Dispatchers.IO) {
             runCatching {
                 CryptoDbHelper(context).use { it.clear() }
+            }
+        }
+
+    suspend fun register(context: Context, name: String, email: String, pass: String): Result<Boolean> =
+        withContext(Dispatchers.IO) {
+            runCatching {
+                // Llama a addUser del Helper
+                CryptoDbHelper(context).use { it.addUser(name, email, pass) != -1L }
             }
         }
 }
