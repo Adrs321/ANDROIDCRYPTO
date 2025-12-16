@@ -31,7 +31,7 @@ class CryptoDetailActivity : AppCompatActivity() {
         GenerativeModel(
             // Usamos 1.5-flash que es rápido y estable para cuentas gratuitas
             modelName = "gemini-2.0-flash-lite",
-            apiKey = "" // Tu API Key
+            apiKey = "AIzaSyDxMQuw_GQkzszFBPeNrwh93B78tFpP6b8" // Tu API Key
         )
     }
 

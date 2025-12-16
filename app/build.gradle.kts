@@ -78,4 +78,5 @@ dependencies {
     // Para cargar imágenes desde una URL (NUEVO)
     implementation("io.coil-kt:coil:2.6.0")
     implementation("com.google.android.gms:play-services-auth:21.0.0")
+    implementation("com.squareup.moshi:moshi-kotlin:1.14.0")
 }
